@@ -1,11 +1,8 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 
 const Landing: React.FunctionComponent = () => {
-  return (
-    <div>
-      <p>This is the landing page.</p>
-    </div>
-  );
+  return <Typography>This is the landing page.</Typography>;
 };
 
 export default Landing;
