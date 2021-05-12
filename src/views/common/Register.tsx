@@ -15,16 +15,32 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 
 import { ValidateUtil } from '../../utils';
 
-const Login: React.FunctionComponent = () => {
+const Register: React.FunctionComponent = () => {
   const classes = useStyles();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
+  const firstNameRef = useRef<HTMLDivElement>(null);
+  const lastNameRef = useRef<HTMLDivElement>(null);
   const emailRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLDivElement>(null);
+
+  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstNameError('');
+    setFirstName(e.currentTarget.value);
+  };
+
+  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLastNameError('');
+    setLastName(e.currentTarget.value);
+  };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailError('');
@@ -45,6 +61,16 @@ const Login: React.FunctionComponent = () => {
   };
 
   const handleSignIn = async () => {
+    if (firstName.length < 1) {
+      setFirstNameError('First name cannot be empty!');
+      firstNameRef.current?.focus();
+      return;
+    }
+    if (lastName.length < 1) {
+      setLastNameError('Last name cannot be empty!');
+      lastNameRef.current?.focus();
+      return;
+    }
     const emailError = ValidateUtil.validateEmail(email);
     if (emailError) {
       setEmailError(emailError);
@@ -65,24 +91,48 @@ const Login: React.FunctionComponent = () => {
         <Paper className={classes.box}>
           <Grid container direction='column' alignItems='flex-start' justify='center'>
             <Typography className={classes.heading} variant='h5'>
-              Sign in
+              Sign up
             </Typography>
             <TextField
+              inputRef={firstNameRef}
+              className={classes.firstNameField}
+              required
+              fullWidth
+              variant='outlined'
+              label='First Name'
+              value={firstName}
+              autoFocus
+              onChange={handleFirstNameChange}
+              error={!!firstNameError}
+              helperText={firstNameError}
+            />
+            <TextField
+              inputRef={lastNameRef}
+              className={classes.textFields}
+              required
+              fullWidth
+              variant='outlined'
+              label='Last Name'
+              value={lastName}
+              onChange={handleLastNameChange}
+              error={!!lastNameError}
+              helperText={lastNameError}
+            />
+            <TextField
               inputRef={emailRef}
-              className={classes.emailField}
+              className={classes.textFields}
               required
               fullWidth
               variant='outlined'
               label='Email'
               value={email}
-              autoFocus
               onChange={handleEmailChange}
               error={!!emailError}
               helperText={emailError}
             />
             <TextField
               inputRef={passwordRef}
-              className={classes.passwordField}
+              className={classes.textFields}
               required
               fullWidth
               variant='outlined'
@@ -107,17 +157,14 @@ const Login: React.FunctionComponent = () => {
                 )
               }}
             />
-            <Button className={classes.forgotPassBtn} color='primary'>
-              Forgot Password?
-            </Button>
             <Button
-              className={classes.signInBtn}
+              className={classes.signUpBtn}
               fullWidth
               variant='contained'
               color='primary'
               onClick={handleSignIn}
             >
-              Sign in
+              Sign up
             </Button>
           </Grid>
         </Paper>
@@ -126,11 +173,11 @@ const Login: React.FunctionComponent = () => {
           direction='row'
           alignItems='center'
           justify='center'
-          className={classes.signUpView}
+          className={classes.signInView}
         >
-          <Typography variant='body1'>{"Don't have an account? "}</Typography>
-          <Button className={classes.signUpBtn} color='primary' component={Link} to='/register'>
-            Sign up
+          <Typography variant='body1'>{'Already have an account? '}</Typography>
+          <Button className={classes.signInBtn} color='primary' component={Link} to='/login'>
+            Sign in
           </Button>
         </Grid>
       </Container>
@@ -138,7 +185,7 @@ const Login: React.FunctionComponent = () => {
   );
 };
 
-export default withRouter(Login);
+export default withRouter(Register);
 
 const useStyles = makeStyles(() => ({
   body: {
@@ -157,23 +204,23 @@ const useStyles = makeStyles(() => ({
   heading: {
     fontWeight: 'bold'
   },
-  emailField: {
+  firstNameField: {
     marginTop: 30
   },
-  passwordField: {
+  textFields: {
     marginTop: 20
   },
   forgotPassBtn: {
     marginTop: 5,
     textTransform: 'none'
   },
-  signInBtn: {
-    marginTop: 20
+  signUpBtn: {
+    marginTop: 30
   },
-  signUpView: {
+  signInView: {
     marginTop: 15
   },
-  signUpBtn: {
+  signInBtn: {
     textTransform: 'none'
   }
 }));
