@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import {
   Container,
@@ -23,6 +23,9 @@ const Login: React.FunctionComponent = () => {
   const [passwordError, setPasswordError] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
+  const emailRef = useRef<HTMLDivElement>(null);
+  const passwordRef = useRef<HTMLDivElement>(null);
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailError('');
     setEmail(e.currentTarget.value);
@@ -45,11 +48,15 @@ const Login: React.FunctionComponent = () => {
   const handleSignIn = async () => {
     const emailError = ValidateUtil.validateEmail(email);
     if (emailError) {
-      return setEmailError(emailError);
+      setEmailError(emailError);
+      emailRef.current?.focus();
+      return;
     }
     const passwordError = ValidateUtil.validatePassword(password);
     if (passwordError) {
-      return setPasswordError(passwordError);
+      setPasswordError(passwordError);
+      passwordRef.current?.focus();
+      return;
     }
   };
 
@@ -62,6 +69,7 @@ const Login: React.FunctionComponent = () => {
               Sign in
             </Typography>
             <TextField
+              inputRef={emailRef}
               className={classes.emailField}
               required
               fullWidth
@@ -74,6 +82,7 @@ const Login: React.FunctionComponent = () => {
               helperText={emailError}
             />
             <TextField
+              inputRef={passwordRef}
               className={classes.passwordField}
               required
               fullWidth
