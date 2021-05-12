@@ -33,7 +33,6 @@ const Login: React.FunctionComponent = () => {
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordError('');
-    setIsPasswordHidden(true);
     setPassword(e.currentTarget.value);
   };
 
