@@ -1,4 +1,5 @@
 export const SET_USER = 'SET_USER';
+export const SIGN_OUT = 'SIGN_OUT';
 
 export interface User {
   id: string;
@@ -13,4 +14,8 @@ interface SetUserAction {
   payload: User;
 }
 
-export type AuthActionTypes = SetUserAction;
+interface SignOutAction {
+  type: typeof SIGN_OUT;
+}
+
+export type AuthActionType = SetUserAction | SignOutAction;

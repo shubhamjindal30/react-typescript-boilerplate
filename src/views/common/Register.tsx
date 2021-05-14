@@ -12,11 +12,15 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 
 import { ValidateUtil } from '../../utils';
+import { AuthActions } from '../../redux/actions';
 
 const Register: React.FunctionComponent = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,6 +30,8 @@ const Register: React.FunctionComponent = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const firstNameRef = useRef<HTMLDivElement>(null);
   const lastNameRef = useRef<HTMLDivElement>(null);
@@ -83,6 +89,12 @@ const Register: React.FunctionComponent = () => {
       passwordRef.current?.focus();
       return;
     }
+    const onError = (errorMsg: string) => {
+      setError(errorMsg);
+      setLoading(false);
+    };
+    setLoading(true);
+    dispatch(AuthActions.signUp({ firstName, lastName, email, password }, onError));
   };
 
   return (
@@ -164,8 +176,13 @@ const Register: React.FunctionComponent = () => {
               color='primary'
               onClick={handleSignIn}
             >
-              Sign up
+              {loading ? 'Loading...' : 'Sign up'}
             </Button>
+            {error && (
+              <Typography variant='body2' className={classes.errorMsg}>
+                {error}
+              </Typography>
+            )}
           </Grid>
         </Paper>
         <Grid
@@ -216,6 +233,10 @@ const useStyles = makeStyles(() => ({
   },
   signUpBtn: {
     marginTop: 30
+  },
+  errorMsg: {
+    marginTop: 10,
+    color: 'red'
   },
   signInView: {
     marginTop: 15
