@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import Routes from './routes/routes';
 import { theme } from './styles/mui-theme';
 import store from './redux';
+import './firebase/index';
 
 const App: React.FunctionComponent = () => {
   useEffect(() => {
