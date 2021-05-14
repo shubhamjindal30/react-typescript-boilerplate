@@ -43,6 +43,23 @@ export const signUp =
     }
   };
 
+export const signIn =
+  (
+    data: {
+      email: string;
+      password: string;
+    },
+    errorCallback: (errorMsg: string) => void
+  ): AuthThunk =>
+  async () => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(data.email, data.password);
+    } catch (err) {
+      console.log(err);
+      errorCallback(err.message);
+    }
+  };
+
 export const getUserData =
   (id: string): AuthThunk =>
   async (dispatch) => {

@@ -12,16 +12,22 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 
 import { ValidateUtil } from '../../utils';
+import { AuthActions } from '../../redux/actions';
 
 const Login: React.FunctionComponent = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const emailRef = useRef<HTMLDivElement>(null);
   const passwordRef = useRef<HTMLDivElement>(null);
@@ -57,6 +63,12 @@ const Login: React.FunctionComponent = () => {
       passwordRef.current?.focus();
       return;
     }
+    const onError = (errorMsg: string) => {
+      setError(errorMsg);
+      setLoading(false);
+    };
+    setLoading(true);
+    dispatch(AuthActions.signIn({ email, password }, onError));
   };
 
   return (
@@ -117,8 +129,13 @@ const Login: React.FunctionComponent = () => {
               color='primary'
               onClick={handleSignIn}
             >
-              Sign in
+              {loading ? 'Loading...' : 'Sign in'}
             </Button>
+            {error && (
+              <Typography variant='body2' className={classes.errorMsg}>
+                {error}
+              </Typography>
+            )}
           </Grid>
         </Paper>
         <Grid
@@ -169,6 +186,10 @@ const useStyles = makeStyles(() => ({
   },
   signInBtn: {
     marginTop: 20
+  },
+  errorMsg: {
+    marginTop: 10,
+    color: 'red'
   },
   signUpView: {
     marginTop: 15
