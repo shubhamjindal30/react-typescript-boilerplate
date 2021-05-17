@@ -16,11 +16,18 @@
       "jsx": true // Allows for the parsing of JSX
     }
   },
+  "env": {
+    "jest": true,
+    "node": true,
+    "browser": true
+  },
   "rules": {
     "no-console": 0,
     "prettier/prettier": 1,
     "quotes": [1, "single", "avoid-escape"],
-    "jsx-quotes": [1, "prefer-single"]
+    "jsx-quotes": [1, "prefer-single"],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
     // "consistent-return": "off"
   }
 }
