@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   Container,
   Grid,
@@ -18,6 +18,7 @@ import { ValidateUtil } from '../../utils';
 import { AuthActions } from '../../redux/actions';
 
 const Login: React.FunctionComponent = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -71,6 +72,10 @@ const Login: React.FunctionComponent = () => {
     dispatch(AuthActions.signIn({ email, password }, onError));
   };
 
+  const handleSignUpClick = () => {
+    history.push('/register');
+  };
+
   return (
     <div className={classes.body}>
       <Container maxWidth='xs'>
@@ -80,6 +85,7 @@ const Login: React.FunctionComponent = () => {
               Sign in
             </Typography>
             <TextField
+              id='email'
               inputRef={emailRef}
               className={classes.emailField}
               required
@@ -93,6 +99,8 @@ const Login: React.FunctionComponent = () => {
               helperText={emailError}
             />
             <TextField
+              id='password'
+              data-testid='password'
               inputRef={passwordRef}
               className={classes.passwordField}
               required
@@ -146,7 +154,7 @@ const Login: React.FunctionComponent = () => {
           className={classes.signUpView}
         >
           <Typography variant='body1'>{"Don't have an account? "}</Typography>
-          <Button className={classes.signUpBtn} color='primary' component={Link} to='/register'>
+          <Button className={classes.signUpBtn} color='primary' onClick={handleSignUpClick}>
             Sign up
           </Button>
         </Grid>
@@ -155,7 +163,7 @@ const Login: React.FunctionComponent = () => {
   );
 };
 
-export default withRouter(Login);
+export default Login;
 
 const useStyles = makeStyles(() => ({
   body: {

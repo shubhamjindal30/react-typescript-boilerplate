@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   Container,
   Grid,
@@ -18,6 +18,7 @@ import { ValidateUtil } from '../../utils';
 import { AuthActions } from '../../redux/actions';
 
 const Register: React.FunctionComponent = () => {
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -66,7 +67,7 @@ const Register: React.FunctionComponent = () => {
     e.preventDefault();
   };
 
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     if (firstName.length < 1) {
       setFirstNameError('First name cannot be empty!');
       firstNameRef.current?.focus();
@@ -97,6 +98,10 @@ const Register: React.FunctionComponent = () => {
     dispatch(AuthActions.signUp({ firstName, lastName, email, password }, onError));
   };
 
+  const handleSignInClick = () => {
+    history.push('/login');
+  };
+
   return (
     <div className={classes.body}>
       <Container maxWidth='xs'>
@@ -106,6 +111,7 @@ const Register: React.FunctionComponent = () => {
               Sign up
             </Typography>
             <TextField
+              id='first-name'
               inputRef={firstNameRef}
               className={classes.firstNameField}
               required
@@ -119,6 +125,7 @@ const Register: React.FunctionComponent = () => {
               helperText={firstNameError}
             />
             <TextField
+              id='last-name'
               inputRef={lastNameRef}
               className={classes.textFields}
               required
@@ -131,6 +138,7 @@ const Register: React.FunctionComponent = () => {
               helperText={lastNameError}
             />
             <TextField
+              id='email'
               inputRef={emailRef}
               className={classes.textFields}
               required
@@ -143,6 +151,8 @@ const Register: React.FunctionComponent = () => {
               helperText={emailError}
             />
             <TextField
+              id='password'
+              data-testid='password'
               inputRef={passwordRef}
               className={classes.textFields}
               required
@@ -174,7 +184,7 @@ const Register: React.FunctionComponent = () => {
               fullWidth
               variant='contained'
               color='primary'
-              onClick={handleSignIn}
+              onClick={handleSignUp}
             >
               {loading ? 'Loading...' : 'Sign up'}
             </Button>
@@ -193,7 +203,7 @@ const Register: React.FunctionComponent = () => {
           className={classes.signInView}
         >
           <Typography variant='body1'>{'Already have an account? '}</Typography>
-          <Button className={classes.signInBtn} color='primary' component={Link} to='/login'>
+          <Button className={classes.signInBtn} color='primary' onClick={handleSignInClick}>
             Sign in
           </Button>
         </Grid>
@@ -202,7 +212,7 @@ const Register: React.FunctionComponent = () => {
   );
 };
 
-export default withRouter(Register);
+export default Register;
 
 const useStyles = makeStyles(() => ({
   body: {
