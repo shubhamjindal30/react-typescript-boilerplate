@@ -1,46 +1,63 @@
-# Getting Started with Create React App
+# React TypeScript Boilerplate
+A boilerplate built with [React.js](https://reactjs.org), [Redux](https://redux.js.org), [Material UI](https://material-ui.com), [Firebase](https://firebase.google.com) and [TypeScript](https://www.typescriptlang.org) to help you start developing web applications.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Installation and Setup Instructions
+The instructions below will help you run a copy of this project on your machine.
 
-In the project directory, you can run:
+### Project Dependencies
+In order to run this project, you will need the following dependencies installed on your machine:
+- [Node.js](https://nodejs.org)
+- [Yarn](https://yarnpkg.com)
 
-### `yarn start`
+### Installation
+You can install the packages required by the application using:
+```shell script
+yarn install
+``` 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Environment Setup
+Create a .env file using the example file provided using:
+```shell script
+cp .env.example .env
+```
+After this, update the Firebase config variables in the .env file created.
 
-The page will reload if you make edits.\
+### Test Suite
+The unit tests can be found in the respective `__test__` directories within the project.
+
+To run the test suite, you can use the following command:
+```shell script
+yarn test
+```
+This will launch the test runner in an interactive watch mode.
+
+To check the code coverage, you can run:
+```shell script
+yarn test:coverage
+```
+
+### Development Server
+To run the application in development mode, you can simply use:
+```shell script
+yarn start
+```
+You can open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will reload if you make edits. \
 You will also see any lint errors in the console.
 
-### `yarn test`
+### Production Build
+To create a production build for the application, you can run:
+```shell script
+yarn build
+```
+The build will be created in the ```build``` folder.
+It will correctly bundle the React application and optimize the build for the best performance.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+After this, the application will be ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+## Authors
+- **[Shubham Jindal](https://github.com/shubhamjindal30)**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
