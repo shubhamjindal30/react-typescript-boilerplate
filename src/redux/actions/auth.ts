@@ -1,6 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ThunkAction } from 'redux-thunk';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithEmailAndPassword
+} from 'firebase/auth';
 
-import firebase from '../../firebase';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
+
+import { db } from '../../firebase';
 import { RootState } from '..';
 import { User, AuthActionType, SET_USER, SIGN_OUT } from '../types/auth';
 
@@ -18,7 +27,8 @@ export const signUp =
   ): AuthThunk =>
   async (dispatch) => {
     try {
-      const res = await firebase.auth().createUserWithEmailAndPassword(data.email, data.password);
+      const auth = getAuth();
+      const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
       const currentUser = res.user;
       if (currentUser) {
         const userData: User = {
@@ -26,12 +36,11 @@ export const signUp =
           email: data.email,
           firstName: data.firstName,
           lastName: data.lastName,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          createdAt: serverTimestamp()
         };
 
-        const db = firebase.firestore();
-        await db.collection('users').doc(currentUser.uid).set(userData);
-        await currentUser.sendEmailVerification();
+        await setDoc(doc(db, 'users', currentUser?.uid), userData);
+        await sendEmailVerification(currentUser);
         dispatch({
           type: SET_USER,
           payload: userData
@@ -39,6 +48,7 @@ export const signUp =
       }
     } catch (err) {
       console.log(err);
+      // @ts-ignore
       errorCallback(err.message);
     }
   };
@@ -53,9 +63,11 @@ export const signIn =
   ): AuthThunk =>
   async () => {
     try {
-      await firebase.auth().signInWithEmailAndPassword(data.email, data.password);
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, data.email, data.password);
     } catch (err) {
       console.log(err);
+      // @ts-ignore
       errorCallback(err.message);
     }
   };
@@ -64,9 +76,8 @@ export const getUserData =
   (id: string): AuthThunk =>
   async (dispatch) => {
     try {
-      const db = firebase.firestore();
-      const currentUser = await db.collection('users').doc(id).get();
-      if (currentUser.exists)
+      const currentUser = await getDoc(doc(db, 'users', id));
+      if (currentUser.exists())
         dispatch({
           type: SET_USER,
           payload: currentUser.data() as User
@@ -79,7 +90,8 @@ export const getUserData =
 export const signOut = (): AuthThunk => {
   return async (dispatch) => {
     try {
-      await firebase.auth().signOut();
+      const auth = getAuth();
+      await auth.signOut();
       dispatch({
         type: SIGN_OUT
       });

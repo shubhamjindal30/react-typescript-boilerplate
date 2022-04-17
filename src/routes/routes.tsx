@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-import firebase from '../firebase';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import { AuthActions } from '../redux/actions';
@@ -14,7 +14,7 @@ const Routes: React.FunctionComponent = () => {
 
   useEffect(() => {
     setLoading(true);
-    const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+    const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
       if (user) {
         setLoading(true);
         await dispatch(AuthActions.getUserData(user.uid));
