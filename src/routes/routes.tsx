@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { BrowserRouter, Routes as BrowserRoutes, Route, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
+import { RootState } from 'src/redux';
 import { AuthActions } from '../redux/actions';
 import { Landing, Login, Register, Dashboard } from '../views';
 
 const Routes: React.FunctionComponent = () => {
   const dispatch = useDispatch();
+  const { authenticated } = useSelector((state: RootState) => state.auth);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -31,13 +31,20 @@ const Routes: React.FunctionComponent = () => {
 
   return (
     <BrowserRouter>
-      <Switch>
-        <PublicRoute exact path='/' component={Landing} />
-        <PublicRoute exact path='/login' component={Login} />
-        <PublicRoute exact path='/register' component={Register} />
-
-        <PrivateRoute exact path='/dashboard' component={Dashboard} />
-      </Switch>
+      {!authenticated && (
+        <BrowserRoutes>
+          <Route path='/' element={<Landing />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='*' element={<Navigate to='/login' />} />
+        </BrowserRoutes>
+      )}
+      {authenticated && (
+        <BrowserRoutes>
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='*' element={<Navigate to='/dashboard' />} />
+        </BrowserRoutes>
+      )}
     </BrowserRouter>
   );
 };

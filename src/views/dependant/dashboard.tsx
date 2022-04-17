@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Container, Typography, Button } from '@material-ui/core';
+import { Container, Typography, Button } from '@mui/material';
 
 import { AuthActions } from '../../redux/actions';
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Grid,
@@ -8,17 +8,17 @@ import {
   TextField,
   Button,
   InputAdornment,
-  IconButton,
-  makeStyles
-} from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+  IconButton
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 
 import { ValidateUtil } from '../../utils';
 import { AuthActions } from '../../redux/actions';
 
 const Login: React.FunctionComponent = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -73,14 +73,14 @@ const Login: React.FunctionComponent = () => {
   };
 
   const handleSignUpClick = () => {
-    history.push('/register');
+    navigate('/register');
   };
 
   return (
     <div className={classes.body}>
       <Container maxWidth='xs'>
         <Paper className={classes.box}>
-          <Grid container direction='column' alignItems='flex-start' justify='center'>
+          <Grid container direction='column' alignItems='flex-start' justifyContent='center'>
             <Typography className={classes.heading} variant='h5'>
               Sign in
             </Typography>
@@ -150,7 +150,7 @@ const Login: React.FunctionComponent = () => {
           container
           direction='row'
           alignItems='center'
-          justify='center'
+          justifyContent='center'
           className={classes.signUpView}
         >
           <Typography variant='body1'>{"Don't have an account? "}</Typography>
@@ -165,7 +165,7 @@ const Login: React.FunctionComponent = () => {
 
 export default Login;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   body: {
     height: '90vh',
     backgroundColor: '#fafafa',
@@ -205,4 +205,4 @@ const useStyles = makeStyles(() => ({
   signUpBtn: {
     textTransform: 'none'
   }
-}));
+});

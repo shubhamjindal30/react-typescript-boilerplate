@@ -1,7 +1,7 @@
 import React from 'react';
 import { render as rtlRender, RenderOptions, RenderResult } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material';
 
 import { theme } from '../styles/mui-theme';
 import store from '../redux';

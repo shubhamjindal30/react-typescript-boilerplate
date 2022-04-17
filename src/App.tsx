@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material';
 import { Provider } from 'react-redux';
 
 import Routes from './routes/routes';
